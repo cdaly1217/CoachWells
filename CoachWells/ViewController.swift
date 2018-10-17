@@ -10,15 +10,10 @@ import UIKit
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource
 {
-@IBAction func addOption(_ sender: Any) {
-}
-
-
-@IBAction func editButton(_ sender: Any) {
-}
-
-
     
+    
+    
+    var names: [String] = []
 
     @IBOutlet weak var rosterTableView: UITableView!
     
@@ -29,6 +24,33 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     {
         super.viewDidLoad()
         
+    }
+    @IBAction func addOption(_ sender: Any) {
+        // create alert with textfield
+        let alert = UIAlertController(title: "Alert", message: "Message", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Click", style: UIAlertActionStyle.default, handler: nil))
+        //2. Add the text field. You can configure it however you need.
+        alert.addTextField { (textField) in
+            textField.text = "Some default text"
+        }
+        // 3. Grab the value from the text field, and print it when the user clicks OK.
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
+            let textField = alert?.textFields![0] // Force unwrapping because we know it exists.
+            print("Text field: \(textField?.text)")
+        }))
+        
+        
+        self.present(alert, animated: true, completion: nil)
+        
+        
+        
+        
+        names.append("Christine")
+        rosterTableView.reloadData()
+    }
+    
+    
+    @IBAction func editButton(_ sender: Any) {
     }
     
     @IBAction func buttonNameAction(_ sender: UIButton) {
@@ -47,13 +69,14 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return names.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "gameCell", for: indexPath) as! PlayerCell
+        let name = names[indexPath.row]
         cell.labelPlayer.text = "\(indexPath.row + 1)"
-        cell.nameButton.setTitle("Christine", for: .normal)
+        cell.nameButton.setTitle(name, for: .normal)
         
         
         return cell
